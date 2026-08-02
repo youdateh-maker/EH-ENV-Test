@@ -85,7 +85,7 @@ const BREAKFASTS = {
   leisurely: [
     {id:'bl1',name:'Scrambled eggs, turkey bacon & wholemeal toast',protein:26,cal:480,ing:['Eggs','Turkey bacon','Wholemeal bread','Butter']},
     {id:'bl2',name:'Pancakes with Greek yoghurt, banana & peanut butter',protein:20,cal:520,ing:['Pancake mix','Greek yoghurt','Banana','Peanut butter']},
-    {id:'bl3',name:'Prata with dhal & egg',protein:18,cal:500,ing:['Prata','Dhal curry','Egg']},
+    {id:'bl3',name:'Tamagoyaki, rice, miso soup & natto',protein:20,cal:420,ing:['Eggs','Japanese rice','Miso soup','Natto']},
     {id:'bl4',name:'Chicken congee with century egg',protein:22,cal:420,ing:['Rice','Shredded chicken','Century egg','Spring onion']},
     {id:'bl5',name:'French toast with scrambled eggs & sausage',protein:24,cal:520,ing:['Bread','Eggs','Chicken sausage','Milk']},
     {id:'bl6',name:'Mee siam with egg',protein:16,cal:460,ing:['Rice vermicelli','Egg','Tofu puff','Gravy']},
@@ -99,19 +99,19 @@ const MEALS = [
  {id:'l2',slot:'lunch',name:'Teriyaki salmon donburi',cuisine:'Asian',src:'fish',protein:34,cal:650,ing:['Salmon fillet','Japanese rice','Edamame','Teriyaki sauce']},
  {id:'l3',slot:'lunch',name:'Beef & broccoli stir-fry with rice',cuisine:'Asian',src:'beef',protein:36,cal:680,ing:['Beef strips','Broccoli','Garlic','Jasmine rice']},
  {id:'l4',slot:'lunch',name:'Tofu & egg fried rice with edamame',cuisine:'Asian',src:'plant',protein:26,cal:560,ing:['Firm tofu','Eggs','Edamame','Rice']},
- {id:'l5',slot:'lunch',name:'Chicken briyani with raita',cuisine:'Asian',src:'chicken',protein:40,cal:720,ing:['Chicken leg','Basmati rice','Yoghurt','Briyani spices']},
+ {id:'l5',slot:'lunch',name:'Chicken katsu curry with rice',cuisine:'Asian',src:'chicken',protein:36,cal:720,ing:['Chicken cutlet','Japanese curry sauce','Rice','Panko breadcrumbs']},
  {id:'l6',slot:'lunch',name:'Tuna & chickpea salad wrap',cuisine:'Western',src:'fish',protein:32,cal:540,ing:['Canned tuna','Chickpeas','Wholemeal wrap','Greek yoghurt']},
  {id:'l7',slot:'lunch',name:'Nasi lemak with grilled chicken & egg',cuisine:'Asian',src:'chicken',protein:35,cal:700,ing:['Chicken thigh','Coconut rice','Egg','Ikan bilis','Cucumber']},
  {id:'l8',slot:'lunch',name:'Turkey & cheese wholemeal sandwich, side salad',cuisine:'Western',src:'chicken',protein:30,cal:520,ing:['Turkey breast slices','Wholemeal bread','Cheese','Mixed greens']},
  {id:'l9',slot:'lunch',name:'Prawn & vegetable fried noodles',cuisine:'Asian',src:'fish',protein:28,cal:610,ing:['Prawns','Noodles','Egg','Mixed vegetables']},
- {id:'l10',slot:'lunch',name:'Dhal curry with paneer & brown rice',cuisine:'Asian',src:'plant',protein:24,cal:580,ing:['Red lentils','Paneer','Brown rice','Curry spices']},
+ {id:'l10',slot:'lunch',name:'Agedashi tofu with rice & edamame',cuisine:'Asian',src:'plant',protein:24,cal:580,ing:['Silken tofu','Dashi sauce','Rice','Edamame']},
  {id:'l11',slot:'lunch',name:'Grilled batang fish with sweet potato mash',cuisine:'Asian',src:'fish',protein:34,cal:590,ing:['Batang fish','Sweet potato','Butter','Lemon']},
  {id:'l12',slot:'lunch',name:'Beef meatball pasta, side salad',cuisine:'Western',src:'beef',protein:33,cal:660,ing:['Beef mince','Pasta','Tomato sauce','Mixed greens']},
  {id:'l13',slot:'lunch',name:'Char siew chicken rice with bok choy',cuisine:'Asian',src:'chicken',protein:37,cal:690,ing:['Chicken char siew','Rice','Bok choy','Char siew sauce']},
  {id:'l14',slot:'lunch',name:'Egg fried rice with satay chicken skewers',cuisine:'Asian',src:'chicken',protein:39,cal:700,ing:['Chicken skewers','Eggs','Rice','Peanut sauce']},
  {id:'l15',slot:'lunch',name:'Quinoa power bowl, grilled chicken & avocado',cuisine:'Western',src:'chicken',protein:36,cal:630,ing:['Chicken breast','Quinoa','Avocado','Cherry tomatoes']},
  {id:'l16',slot:'lunch',name:'Fish ball noodle soup, extra fish cake',cuisine:'Asian',src:'fish',protein:26,cal:520,ing:['Fish balls','Fish cake','Noodles','Bok choy']},
- {id:'l17',slot:'lunch',name:'Butter chicken with basmati rice',cuisine:'Asian',src:'chicken',protein:35,cal:710,ing:['Chicken thigh','Basmati rice','Tomato cream sauce','Naan']},
+ {id:'l17',slot:'lunch',name:'Baked chicken parmesan with pasta',cuisine:'Western',src:'chicken',protein:35,cal:710,ing:['Chicken breast','Pasta','Tomato sauce','Parmesan cheese']},
  {id:'l18',slot:'lunch',name:'Tempeh & vegetable stir-fry with rice',cuisine:'Asian',src:'plant',protein:22,cal:540,ing:['Tempeh','Mixed vegetables','Soy sauce','Rice']},
  {id:'d1',slot:'dinner',name:'Baked salmon, roasted vegetables & rice',cuisine:'Western',src:'fish',protein:36,cal:640,ing:['Salmon fillet','Pumpkin','Carrot','Rice']},
  {id:'d2',slot:'dinner',name:'Chicken curry with rice & cucumber salad',cuisine:'Asian',src:'chicken',protein:38,cal:690,ing:['Chicken leg','Potato','Coconut milk','Rice']},
@@ -130,7 +130,7 @@ const MEALS = [
  {id:'d15',slot:'dinner',name:'Grilled chicken satay, peanut sauce & rice',cuisine:'Asian',src:'chicken',protein:37,cal:680,ing:['Chicken thigh','Peanut sauce','Rice','Cucumber']},
  {id:'d16',slot:'dinner',name:'Fish curry, brown rice & okra',cuisine:'Asian',src:'fish',protein:32,cal:610,ing:['Fish fillet','Curry paste','Okra','Brown rice']},
  {id:'d17',slot:'dinner',name:'Honey soy pork chop, vegetables & rice',cuisine:'Western',src:'pork',protein:35,cal:650,ing:['Pork chop','Honey soy glaze','Mixed vegetables','Rice']},
- {id:'d18',slot:'dinner',name:'Chickpea & spinach dhal, paneer & rice',cuisine:'Asian',src:'plant',protein:25,cal:560,ing:['Chickpeas','Spinach','Paneer','Rice']}
+ {id:'d18',slot:'dinner',name:'Miso-glazed salmon, rice & greens',cuisine:'Asian',src:'fish',protein:34,cal:610,ing:['Salmon fillet','Miso glaze','Rice','Steamed greens']}
 ];
 
 const RESTAURANTS = [
@@ -140,7 +140,7 @@ const RESTAURANTS = [
   {name:"Soup Restaurant",note:"Samsui ginger chicken & home-style Chinese dishes, good for sharing",meal:['lunch','dinner'],protein:34,cal:640},
   {name:"PastaMania",note:"Pasta with grilled chicken or meatball add-ons, easy for younger kids",meal:['lunch','dinner'],protein:26,cal:680},
   {name:"Hawker centre economy rice / Western stall",note:"Pick-your-own chicken/fish/tofu portions, budget-friendly, very adjustable",meal:['lunch','dinner'],protein:30,cal:600},
-  {name:"Al-Azhar / Islamic Restaurant",note:"Halal Indian-Muslim briyani & mutton/chicken curries, family style",meal:['lunch','dinner'],protein:36,cal:720},
+  {name:"Ichiban Boshi",note:"Japanese family restaurant - donburi, teriyaki sets, sushi, kid-friendly",meal:['lunch','dinner'],protein:30,cal:650},
   {name:"Swensen's",note:"Grilled chicken & fish mains with a treat at the end, easy for a family table",meal:['lunch','dinner'],protein:32,cal:660},
   {name:"Wildseed Cafe / garden brunch cafes",note:"Protein-rich brunch sets - eggs & bacon, grilled chicken salads",meal:['breakfast','lunch'],protein:28,cal:580},
   {name:"Han's Cafe",note:"Affordable Western family cafe - chicken chop, fish & chips",meal:['lunch','dinner'],protein:28,cal:640}
