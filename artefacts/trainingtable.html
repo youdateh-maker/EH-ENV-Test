@@ -1,0 +1,833 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --kraft: #E7DCC2;
+  --kraft-dark: #D9CBA8;
+  --ink: #211E17;
+  --cream: #F8F3E6;
+  --butcher: #A3342A;
+  --butcher-dark: #7E271F;
+  --leaf: #3E5C3F;
+  --leaf-dark: #2C4330;
+  --gold: #C1852E;
+  --line: rgba(33,30,23,0.18);
+  --shadow: 0 1px 0 rgba(0,0,0,0.06);
+  font-family: 'Inter', sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;}
+#app{
+  background:
+    radial-gradient(ellipse at top left, rgba(0,0,0,0.04), transparent 60%),
+    var(--kraft);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px),
+    var(--kraft);
+  color: var(--ink);
+  min-height:100%;
+  padding: 28px 18px 60px;
+}
+.wrap{max-width:1120px;margin:0 auto;}
+
+.stamp-header{
+  display:flex; align-items:flex-end; justify-content:space-between; gap:20px;
+  flex-wrap:wrap;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom:18px; margin-bottom:22px;
+}
+.stamp-title{
+  font-family:'Archivo Black', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  line-height:0.95;
+  letter-spacing:-0.5px;
+  color: var(--ink);
+  transform: rotate(-0.6deg);
+}
+.stamp-title span{ color: var(--butcher); }
+.stamp-sub{
+  font-family:'Oswald', sans-serif;
+  text-transform:uppercase;
+  letter-spacing:2.5px;
+  font-size:12px;
+  color: var(--leaf-dark);
+  margin-top:6px;
+}
+.order-no{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;
+  text-align:right;
+  color:var(--ink);
+  opacity:0.75;
+  line-height:1.5;
+}
+.order-no b{color:var(--butcher);}
+
+.section-label{
+  font-family:'Oswald', sans-serif;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-size:13px;
+  color:var(--leaf-dark);
+  display:flex; align-items:center; gap:10px;
+  margin: 30px 0 12px;
+}
+.section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+.roster{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
+  gap:14px;
+}
+.card{
+  background:var(--cream);
+  border:1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding:14px 16px;
+  position:relative;
+}
+.card::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:4px;
+  background: var(--leaf);
+}
+.roster .card::before{background:var(--gold);}
+.boy-name{
+  font-family:'Oswald',sans-serif; font-weight:600; font-size:16px;
+  background:transparent; border:none; border-bottom:1px dashed var(--line);
+  width:100%; padding:2px 0 4px; color:var(--ink);
+}
+.boy-name:focus{outline:none; border-bottom:1px dashed var(--butcher);}
+.boy-age{
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink); opacity:0.65;
+  margin:4px 0 10px;
+}
+.target-row{
+  display:flex; justify-content:space-between;
+  font-family:'JetBrains Mono',monospace; font-size:11px; margin-bottom:4px; opacity:0.85;
+}
+.gauge-label{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:'Oswald',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:1px;
+  margin-top:10px;
+}
+.gauge-pct{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px;}
+.gauge-track{
+  height:10px; background:var(--kraft-dark); border:1px solid var(--line);
+  margin-top:5px; position:relative; overflow:hidden;
+}
+.gauge-fill{ height:100%; transition:width 0.5s ease; }
+.gauge-note{font-family:'Inter',sans-serif; font-size:10.5px; opacity:0.6; margin-top:6px;}
+
+.controls{
+  display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center;
+  background:var(--cream); border:1px solid var(--line); padding:12px 16px; box-shadow:var(--shadow);
+}
+.filter-group{display:flex; flex-direction:column; gap:6px;}
+.filter-title{font-family:'Oswald',sans-serif; font-size:10.5px; text-transform:uppercase; letter-spacing:1.5px; opacity:0.65;}
+.chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+.chip{
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  border:1px solid var(--ink); padding:4px 9px; cursor:pointer; user-select:none;
+  background:transparent; color:var(--ink);
+  transition:all .15s ease;
+}
+.chip.active{background:var(--leaf); border-color:var(--leaf); color:var(--cream);}
+.spacer{flex:1;}
+.btn{
+  font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:1px; font-size:12.5px;
+  border:none; padding:10px 16px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+  color:var(--cream); background:var(--butcher);
+  transition: transform .1s ease, background .15s ease;
+}
+.btn:hover{background:var(--butcher-dark);}
+.btn:active{transform: translateY(1px);}
+.btn.secondary{background:var(--leaf);}
+.btn.secondary:hover{background:var(--leaf-dark);}
+.btn.ghost{background:transparent; color:var(--ink); border:1px solid var(--ink);}
+.btn.ghost:hover{background:var(--ink); color:var(--cream);}
+.btn svg{width:14px;height:14px;}
+
+.day-tabs{display:flex; gap:0; overflow-x:auto; margin-top:22px; border-bottom:2px solid var(--ink);}
+.day-tab{
+  font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:1px; font-size:12px;
+  padding:9px 14px; cursor:pointer; white-space:nowrap; color:var(--ink); opacity:0.6;
+  border:1px solid transparent; border-bottom:none;
+  position:relative; top:2px; text-align:center;
+}
+.day-tab .dtdate{display:block; font-family:'JetBrains Mono',monospace; font-size:9.5px; opacity:0.7; margin-top:2px;}
+.day-tab.active{
+  opacity:1; background:var(--cream); border-color:var(--ink); border-bottom:2px solid var(--cream);
+  font-weight:700;
+}
+.day-tab .badge{
+  display:inline-block; font-family:'JetBrains Mono',monospace; font-size:8.5px;
+  background:var(--butcher); color:var(--cream); padding:1px 4px; margin-left:4px; vertical-align:middle;
+}
+.day-tab .badge.sch{background:var(--gold);}
+
+.day-panel{background:var(--cream); border:1px solid var(--ink); border-top:none; padding:20px; }
+.holiday-banner{
+  border:1px solid var(--butcher); background:rgba(163,52,42,0.08); color:var(--butcher-dark);
+  font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:1px; font-size:12px;
+  padding:9px 12px; margin-bottom:16px;
+}
+.holiday-banner.sch{border-color:var(--gold); background:rgba(193,133,46,0.1); color:var(--leaf-dark);}
+
+.meal-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;}
+@media (max-width:900px){.meal-grid{grid-template-columns:1fr;}}
+.meal-card{border:1px dashed var(--line); padding:14px 16px; position:relative; background:rgba(255,255,255,0.25);}
+.meal-slot{
+  font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:2px;
+  color:var(--butcher); margin-bottom:6px;
+}
+.meal-name{font-family:'Oswald',sans-serif; font-weight:600; font-size:17px; line-height:1.15; margin-bottom:6px;}
+.meal-tags{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;}
+.tag{
+  font-family:'JetBrains Mono',monospace; font-size:10px; border:1px solid var(--line);
+  padding:2px 7px; opacity:0.75;
+}
+.macro-row{display:flex; gap:14px; font-family:'JetBrains Mono',monospace; font-size:11.5px; margin-bottom:10px;}
+.macro-row b{font-size:13px;}
+.ingredients{font-size:11.5px; opacity:0.75; line-height:1.5; margin-bottom:12px;}
+.meal-actions{display:flex; justify-content:flex-end;}
+.icon-btn{
+  background:transparent; border:1px solid var(--ink); width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.icon-btn:hover{background:var(--ink);}
+.icon-btn:hover svg{stroke:var(--cream);}
+.icon-btn svg{width:15px; height:15px; stroke:var(--ink);}
+
+.resto-option{border-top:1px dashed var(--line); padding-top:8px; margin-top:8px; font-size:12px;}
+.resto-option:first-of-type{border-top:none; margin-top:0; padding-top:0;}
+.resto-name{font-family:'Oswald',sans-serif; font-weight:600; font-size:14px;}
+.resto-meta{opacity:0.7; font-size:11px; margin-top:2px;}
+
+.day-summary{
+  margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);
+  font-family:'JetBrains Mono',monospace; font-size:11.5px; opacity:0.8;
+}
+
+.receipt{
+  background:var(--cream); border:1px solid var(--ink); max-width:440px; margin:0 auto;
+  padding:22px 24px 30px; font-family:'JetBrains Mono',monospace; font-size:12px;
+  box-shadow:0 4px 0 rgba(0,0,0,0.05);
+}
+.receipt h3{
+  font-family:'Archivo Black',sans-serif; text-align:center; font-size:18px; margin:0 0 4px;
+  letter-spacing:1px;
+}
+.receipt .sub{text-align:center; font-size:10.5px; opacity:0.65; margin-bottom:14px;}
+.receipt hr{border:none; border-top:1px dashed var(--ink); margin:10px 0;}
+.receipt-row{display:flex; justify-content:space-between; padding:3px 0;}
+.receipt-row span:last-child{opacity:0.6;}
+.receipt-cat{
+  text-transform:uppercase; letter-spacing:1.5px; font-size:10.5px; font-weight:700;
+  margin-top:12px; color:var(--butcher);
+}
+.snip{text-align:center; opacity:0.4; letter-spacing:4px; margin-top:16px;}
+
+.autopilot{
+  background:var(--cream); border:1px solid var(--ink); padding:18px 20px; margin-top:8px;
+}
+.autopilot h4{font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:1px; font-size:13px; margin:0 0 8px;}
+.autopilot ol{margin:8px 0 0; padding-left:20px; font-size:13px; line-height:1.7;}
+.autopilot code{
+  display:block; background:var(--ink); color:var(--cream); font-family:'JetBrains Mono',monospace;
+  font-size:11.5px; padding:12px 14px; margin-top:10px; white-space:pre-wrap; line-height:1.6;
+}
+
+.hidden{display:none !important;}
+.footnote{
+  font-family:'Inter',sans-serif; font-size:11.5px; opacity:0.6; margin-top:28px; line-height:1.6;
+  border-top:1px solid var(--line); padding-top:14px;
+}
+</style>
+
+<div id="app">
+  <div class="wrap">
+
+    <div class="stamp-header">
+      <div>
+        <div class="stamp-title">THE TRAINING<br/><span>TABLE.</span></div>
+        <div class="stamp-sub">Protein-forward meal planning | 4 growing boys | Singapore-aware</div>
+      </div>
+      <div class="order-no">
+        ROSTER No. <b>004</b><br/>
+        WEEK OF <b id="weekOf">-</b>
+      </div>
+    </div>
+
+    <div class="section-label">Roster &amp; daily targets</div>
+    <div class="roster" id="roster"></div>
+
+    <div class="section-label">Kitchen filters</div>
+    <div class="controls">
+      <div class="filter-group">
+        <div class="filter-title">Protein sources allowed</div>
+        <div class="chip-row" id="proteinChips"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-title">Style</div>
+        <div class="chip-row" id="cuisineChips"></div>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn secondary" id="shuffleWeekBtn">Shuffle whole week</button>
+      <button class="btn" id="shoppingBtn">Shopping list</button>
+      <button class="btn ghost" id="emailBtn">Open in mail app</button>
+      <button class="btn secondary" id="gmailSendBtn">Compose in Gmail</button>
+    </div>
+    <div id="sendStatus" style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:8px;"></div>
+
+    <div class="section-label">This week's board</div>
+    <div class="day-tabs" id="dayTabs"></div>
+    <div class="day-panel" id="dayPanel"></div>
+
+    <div id="shoppingWrap" class="hidden">
+      <div class="section-label">Shopping list</div>
+      <div class="receipt" id="receipt"></div>
+    </div>
+
+    <div class="section-label">Running this every Sunday, automatically</div>
+    <div class="autopilot">
+      <h4>Set up the weekly auto-send</h4>
+      <p style="font-size:13px;line-height:1.6;margin:0;">This artifact can build the menu and even open a pre-filled email for you on demand - but a browser tool can't wake itself up every Sunday. To get a fully automatic weekly email to <b>li.hui.tan@hotmail.com</b> and <b>youdateh@gmail.com</b>, use <b>Claude Cowork's Scheduled Tasks</b> (Schedule tab, weekly, Sunday evening) with your connected Gmail. Paste this as the task:</p>
+      <code id="autopilotPrompt"></code>
+      <p style="font-size:11.5px;opacity:0.65;margin-top:10px;">Until that's set up, the "Email this week's menu" button above gives you the same output on demand, one click at a time.</p>
+    </div>
+
+    <div class="footnote" id="footnote"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+const ICONS = {
+  refresh: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>`
+};
+
+/* ---------------- Singapore calendar data (2026) ---------------- */
+// Update these two lists each year once MOE / MOM release the following year's dates.
+const SG_PUBLIC_HOLIDAYS = {
+  '2026-01-01':"New Year's Day",'2026-02-17':'Chinese New Year','2026-02-18':'Chinese New Year',
+  '2026-03-21':'Hari Raya Puasa','2026-04-03':'Good Friday','2026-05-01':'Labour Day',
+  '2026-05-27':'Hari Raya Haji','2026-05-31':'Vesak Day','2026-06-01':'Vesak Day (observed)',
+  '2026-08-09':'National Day','2026-08-10':'National Day (observed)',
+  '2026-11-08':'Deepavali','2026-11-09':'Deepavali (observed)','2026-12-25':'Christmas Day',
+  // 2027 (gazetted by MOM 18 Jun 2026)
+  '2027-01-01':"New Year's Day",'2027-02-06':'Chinese New Year','2027-02-07':'Chinese New Year',
+  '2027-02-08':'Chinese New Year (observed)','2027-03-10':'Hari Raya Puasa','2027-03-26':'Good Friday',
+  '2027-05-01':'Labour Day','2027-05-17':'Hari Raya Haji','2027-05-20':'Vesak Day',
+  '2027-08-09':'National Day','2027-10-28':'Deepavali','2027-12-25':'Christmas Day'
+};
+const MOE_SCHOOL_HOLIDAYS = [
+  {start:'2026-03-14', end:'2026-03-22', label:'March school holidays'},
+  {start:'2026-05-30', end:'2026-06-28', label:'June school holidays'},
+  {start:'2026-09-05', end:'2026-09-13', label:'September school holidays'},
+  {start:'2026-11-21', end:'2026-12-31', label:'Year-end school holidays'},
+  // 2027 (released by MOE 14 Jul 2026)
+  {start:'2027-03-13', end:'2027-03-21', label:'March school holidays'},
+  {start:'2027-05-29', end:'2027-06-27', label:'June school holidays'},
+  {start:'2027-09-04', end:'2027-09-12', label:'September school holidays'},
+  {start:'2027-11-20', end:'2027-12-31', label:'Year-end school holidays'}
+];
+
+function toKey(d){ return d.toISOString().slice(0,10); }
+function publicHolidayName(d){ return SG_PUBLIC_HOLIDAYS[toKey(d)] || null; }
+function schoolHolidayLabel(d){
+  const k = toKey(d);
+  const block = MOE_SCHOOL_HOLIDAYS.find(b => k >= b.start && k <= b.end);
+  return block ? block.label : null;
+}
+function isWeekend(d){ return d.getDay() === 0 || d.getDay() === 6; }
+
+function getUpcomingMonday(base){
+  const d = new Date(base);
+  const day = d.getDay();
+  let diff;
+  if(day === 0) diff = 1;
+  else if(day === 1) diff = 0;
+  else diff = 8 - day;
+  d.setDate(d.getDate() + diff);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const weekStart = getUpcomingMonday(new Date());
+const WEEK = DAY_NAMES.map((name,i) => {
+  const d = new Date(weekStart);
+  d.setDate(d.getDate()+i);
+  const ph = publicHolidayName(d);
+  const sch = schoolHolidayLabel(d);
+  return {
+    key:name, date:d,
+    dateLabel: d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'}),
+    isPH: !!ph, phName: ph,
+    isSchoolHoliday: !!sch || isWeekend(d) || !!ph, schoolLabel: sch,
+    isWeekend: isWeekend(d)
+  };
+});
+
+/* ---------------- Age targets ---------------- */
+const AGE_TARGETS = {
+  10: { cal: 2000, proteinLow: 40, proteinHigh: 60, factor: 0.85 },
+  11: { cal: 2200, proteinLow: 45, proteinHigh: 65, factor: 1.00 },
+  14: { cal: 2800, proteinLow: 65, proteinHigh: 95, factor: 1.25 }
+};
+let boys = [
+  { id:1, name:'Boy - Eldest', age:14 },
+  { id:2, name:'Boy - Middle A', age:11 },
+  { id:3, name:'Boy - Middle B', age:11 },
+  { id:4, name:'Boy - Youngest', age:10 }
+];
+
+/* ---------------- Breakfast database ---------------- */
+const BREAKFASTS = {
+  quick: [
+    {id:'bq1',name:'Scrambled eggs on wholemeal toast, milk',protein:18,cal:380,ing:['Eggs','Wholemeal bread','Milk']},
+    {id:'bq2',name:'Greek yoghurt with granola & berries',protein:16,cal:320,ing:['Greek yoghurt','Granola','Mixed berries']},
+    {id:'bq3',name:'Peanut butter wholemeal toast, banana, Milo',protein:14,cal:400,ing:['Peanut butter','Wholemeal bread','Banana','Milo']},
+    {id:'bq4',name:'Overnight oats with chia & milk',protein:15,cal:350,ing:['Rolled oats','Chia seeds','Milk','Honey']},
+    {id:'bq5',name:'Ham & cheese wholemeal sandwich, milk',protein:20,cal:420,ing:['Ham','Cheese slice','Wholemeal bread','Milk']},
+    {id:'bq6',name:'Soft-boiled eggs, kaya toast, Milo',protein:16,cal:380,ing:['Eggs','Kaya toast','Milo']},
+    {id:'bq7',name:'Protein overnight oats with peanut butter',protein:18,cal:380,ing:['Rolled oats','Milk','Peanut butter','Protein powder (optional)']}
+  ],
+  leisurely: [
+    {id:'bl1',name:'Scrambled eggs, turkey bacon & wholemeal toast',protein:26,cal:480,ing:['Eggs','Turkey bacon','Wholemeal bread','Butter']},
+    {id:'bl2',name:'Pancakes with Greek yoghurt, banana & peanut butter',protein:20,cal:520,ing:['Pancake mix','Greek yoghurt','Banana','Peanut butter']},
+    {id:'bl3',name:'Prata with dhal & egg',protein:18,cal:500,ing:['Prata','Dhal curry','Egg']},
+    {id:'bl4',name:'Chicken congee with century egg',protein:22,cal:420,ing:['Rice','Shredded chicken','Century egg','Spring onion']},
+    {id:'bl5',name:'French toast with scrambled eggs & sausage',protein:24,cal:520,ing:['Bread','Eggs','Chicken sausage','Milk']},
+    {id:'bl6',name:'Mee siam with egg',protein:16,cal:460,ing:['Rice vermicelli','Egg','Tofu puff','Gravy']},
+    {id:'bl7',name:'Mini nasi lemak with egg & ikan bilis',protein:18,cal:480,ing:['Coconut rice','Egg','Ikan bilis','Sambal']},
+    {id:'bl8',name:'Smoothie bowl with yoghurt, granola & fruit',protein:24,cal:420,ing:['Greek yoghurt','Frozen fruit','Granola','Protein powder (optional)']}
+  ]
+};
+
+/* ---------------- Lunch / dinner database ---------------- */
+const MEALS = [
+ {id:'l1',slot:'lunch',name:'Grilled chicken chop, brown rice & broccoli',cuisine:'Western',src:'chicken',protein:38,cal:620,ing:['Chicken thigh','Brown rice','Broccoli','Olive oil']},
+ {id:'l2',slot:'lunch',name:'Teriyaki salmon donburi',cuisine:'Asian',src:'fish',protein:34,cal:650,ing:['Salmon fillet','Japanese rice','Edamame','Teriyaki sauce']},
+ {id:'l3',slot:'lunch',name:'Beef & broccoli stir-fry with rice',cuisine:'Asian',src:'beef',protein:36,cal:680,ing:['Beef strips','Broccoli','Garlic','Jasmine rice']},
+ {id:'l4',slot:'lunch',name:'Tofu & egg fried rice with edamame',cuisine:'Asian',src:'plant',protein:26,cal:560,ing:['Firm tofu','Eggs','Edamame','Rice']},
+ {id:'l5',slot:'lunch',name:'Chicken briyani with raita',cuisine:'Asian',src:'chicken',protein:40,cal:720,ing:['Chicken leg','Basmati rice','Yoghurt','Briyani spices']},
+ {id:'l6',slot:'lunch',name:'Tuna & chickpea salad wrap',cuisine:'Western',src:'fish',protein:32,cal:540,ing:['Canned tuna','Chickpeas','Wholemeal wrap','Greek yoghurt']},
+ {id:'l7',slot:'lunch',name:'Nasi lemak with grilled chicken & egg',cuisine:'Asian',src:'chicken',protein:35,cal:700,ing:['Chicken thigh','Coconut rice','Egg','Ikan bilis','Cucumber']},
+ {id:'l8',slot:'lunch',name:'Turkey & cheese wholemeal sandwich, side salad',cuisine:'Western',src:'chicken',protein:30,cal:520,ing:['Turkey breast slices','Wholemeal bread','Cheese','Mixed greens']},
+ {id:'l9',slot:'lunch',name:'Prawn & vegetable fried noodles',cuisine:'Asian',src:'fish',protein:28,cal:610,ing:['Prawns','Noodles','Egg','Mixed vegetables']},
+ {id:'l10',slot:'lunch',name:'Dhal curry with paneer & brown rice',cuisine:'Asian',src:'plant',protein:24,cal:580,ing:['Red lentils','Paneer','Brown rice','Curry spices']},
+ {id:'l11',slot:'lunch',name:'Grilled batang fish with sweet potato mash',cuisine:'Asian',src:'fish',protein:34,cal:590,ing:['Batang fish','Sweet potato','Butter','Lemon']},
+ {id:'l12',slot:'lunch',name:'Beef meatball pasta, side salad',cuisine:'Western',src:'beef',protein:33,cal:660,ing:['Beef mince','Pasta','Tomato sauce','Mixed greens']},
+ {id:'l13',slot:'lunch',name:'Char siew chicken rice with bok choy',cuisine:'Asian',src:'chicken',protein:37,cal:690,ing:['Chicken char siew','Rice','Bok choy','Char siew sauce']},
+ {id:'l14',slot:'lunch',name:'Egg fried rice with satay chicken skewers',cuisine:'Asian',src:'chicken',protein:39,cal:700,ing:['Chicken skewers','Eggs','Rice','Peanut sauce']},
+ {id:'l15',slot:'lunch',name:'Quinoa power bowl, grilled chicken & avocado',cuisine:'Western',src:'chicken',protein:36,cal:630,ing:['Chicken breast','Quinoa','Avocado','Cherry tomatoes']},
+ {id:'l16',slot:'lunch',name:'Fish ball noodle soup, extra fish cake',cuisine:'Asian',src:'fish',protein:26,cal:520,ing:['Fish balls','Fish cake','Noodles','Bok choy']},
+ {id:'l17',slot:'lunch',name:'Butter chicken with basmati rice',cuisine:'Asian',src:'chicken',protein:35,cal:710,ing:['Chicken thigh','Basmati rice','Tomato cream sauce','Naan']},
+ {id:'l18',slot:'lunch',name:'Tempeh & vegetable stir-fry with rice',cuisine:'Asian',src:'plant',protein:22,cal:540,ing:['Tempeh','Mixed vegetables','Soy sauce','Rice']},
+ {id:'d1',slot:'dinner',name:'Baked salmon, roasted vegetables & rice',cuisine:'Western',src:'fish',protein:36,cal:640,ing:['Salmon fillet','Pumpkin','Carrot','Rice']},
+ {id:'d2',slot:'dinner',name:'Chicken curry with rice & cucumber salad',cuisine:'Asian',src:'chicken',protein:38,cal:690,ing:['Chicken leg','Potato','Coconut milk','Rice']},
+ {id:'d3',slot:'dinner',name:'Beef steak, mashed potato & greens',cuisine:'Western',src:'beef',protein:40,cal:720,ing:['Beef sirloin','Potato','Butter','Green beans']},
+ {id:'d4',slot:'dinner',name:'Mapo tofu with steamed rice',cuisine:'Asian',src:'plant',protein:28,cal:560,ing:['Firm tofu','Minced pork/beef','Doubanjiang','Rice']},
+ {id:'d5',slot:'dinner',name:'Lemongrass chicken, rice & papaya salad',cuisine:'Asian',src:'chicken',protein:37,cal:650,ing:['Chicken thigh','Lemongrass','Green papaya','Rice']},
+ {id:'d6',slot:'dinner',name:'Spaghetti bolognese, side salad',cuisine:'Western',src:'beef',protein:34,cal:680,ing:['Beef mince','Spaghetti','Tomato sauce','Mixed greens']},
+ {id:'d7',slot:'dinner',name:'Steamed garoupa, ginger soy & rice',cuisine:'Asian',src:'fish',protein:33,cal:560,ing:['Garoupa fillet','Ginger','Soy sauce','Rice']},
+ {id:'d8',slot:'dinner',name:'Hainanese chicken rice, extra breast meat',cuisine:'Asian',src:'chicken',protein:40,cal:700,ing:['Whole chicken','Rice','Chicken broth','Chilli sauce']},
+ {id:'d9',slot:'dinner',name:'Prawn tom yum with rice',cuisine:'Asian',src:'fish',protein:30,cal:540,ing:['Prawns','Tom yum paste','Mushrooms','Rice']},
+ {id:'d10',slot:'dinner',name:'Black pepper beef, vegetables & rice',cuisine:'Asian',src:'beef',protein:38,cal:660,ing:['Beef strips','Capsicum','Black pepper sauce','Rice']},
+ {id:'d11',slot:'dinner',name:'Egg & tofu claypot with rice',cuisine:'Asian',src:'plant',protein:26,cal:550,ing:['Eggs','Silken tofu','Mushrooms','Rice']},
+ {id:'d12',slot:'dinner',name:'Roast chicken thigh, sweet potato & broccoli',cuisine:'Western',src:'chicken',protein:39,cal:660,ing:['Chicken thigh','Sweet potato','Broccoli','Olive oil']},
+ {id:'d13',slot:'dinner',name:'Salmon teriyaki bowl with edamame',cuisine:'Asian',src:'fish',protein:35,cal:620,ing:['Salmon fillet','Edamame','Rice','Teriyaki sauce']},
+ {id:'d14',slot:'dinner',name:'Beef rendang, brown rice & greens',cuisine:'Asian',src:'beef',protein:36,cal:700,ing:['Beef chunks','Rendang paste','Brown rice','Kai lan']},
+ {id:'d15',slot:'dinner',name:'Grilled chicken satay, peanut sauce & rice',cuisine:'Asian',src:'chicken',protein:37,cal:680,ing:['Chicken thigh','Peanut sauce','Rice','Cucumber']},
+ {id:'d16',slot:'dinner',name:'Fish curry, brown rice & okra',cuisine:'Asian',src:'fish',protein:32,cal:610,ing:['Fish fillet','Curry paste','Okra','Brown rice']},
+ {id:'d17',slot:'dinner',name:'Honey soy pork chop, vegetables & rice',cuisine:'Western',src:'pork',protein:35,cal:650,ing:['Pork chop','Honey soy glaze','Mixed vegetables','Rice']},
+ {id:'d18',slot:'dinner',name:'Chickpea & spinach dhal, paneer & rice',cuisine:'Asian',src:'plant',protein:25,cal:560,ing:['Chickpeas','Spinach','Paneer','Rice']}
+];
+
+/* ---------------- Public-holiday dining out suggestions ---------------- */
+// Rough protein/kcal estimates per boy-sized portion, for gauge continuity. Check hours/outlets before heading out.
+const RESTAURANTS = [
+  {name:"Astons Specialities",note:"Western grills - chicken chop, fish, steak sets, generous portions",meal:['lunch','dinner'],protein:35,cal:700},
+  {name:"Song Fa Bak Kut Teh",note:"Pork rib soup, protein-rich broth, casual family seating",meal:['lunch','dinner'],protein:30,cal:600},
+  {name:"The Manhattan FISH MARKET",note:"Fish & seafood platters, kid-friendly set meals",meal:['lunch','dinner'],protein:32,cal:650},
+  {name:"Soup Restaurant",note:"Samsui ginger chicken & home-style Chinese dishes, good for sharing",meal:['lunch','dinner'],protein:34,cal:640},
+  {name:"PastaMania",note:"Pasta with grilled chicken or meatball add-ons, easy for younger kids",meal:['lunch','dinner'],protein:26,cal:680},
+  {name:"Hawker centre economy rice / Western stall",note:"Pick-your-own chicken/fish/tofu portions, budget-friendly, very adjustable",meal:['lunch','dinner'],protein:30,cal:600},
+  {name:"Al-Azhar / Islamic Restaurant",note:"Halal Indian-Muslim briyani & mutton/chicken curries, family style",meal:['lunch','dinner'],protein:36,cal:720},
+  {name:"Swensen's",note:"Grilled chicken & fish mains with a treat at the end, easy for a family table",meal:['lunch','dinner'],protein:32,cal:660},
+  {name:"Wildseed Cafe / garden brunch cafes",note:"Protein-rich brunch sets - eggs & bacon, grilled chicken salads",meal:['breakfast','lunch'],protein:28,cal:580},
+  {name:"Han's Cafe",note:"Affordable Western family cafe - chicken chop, fish & chips",meal:['lunch','dinner'],protein:28,cal:640}
+];
+
+const PROTEIN_SOURCES = [
+  {key:'chicken', label:'Chicken'},{key:'fish', label:'Fish / Seafood'},
+  {key:'beef', label:'Beef'},{key:'pork', label:'Pork'},{key:'plant', label:'Plant / Egg / Tofu'}
+];
+
+let state = {
+  allowedSources: new Set(['chicken','fish','beef','pork','plant']),
+  allowedCuisines: new Set(['Asian','Western']),
+  plan: {},
+  restoChoice: {},   // { Mon: {lunch: 0, dinner: 1} } index into filtered restaurant options
+  activeDay: 'Mon'
+};
+
+function mealById(id){ return MEALS.find(m => m.id === id); }
+function pool(slot){
+  return MEALS.filter(m => m.slot === slot &&
+    state.allowedSources.has(m.src) && state.allowedCuisines.has(m.cuisine));
+}
+function pickMeal(slot, excludeId, excludeSrc, usedThisWeek){
+  let candidates = pool(slot).filter(m => m.id !== excludeId);
+  if(candidates.length === 0) candidates = pool(slot);
+  if(candidates.length === 0) return null;
+  let fresh = candidates.filter(m => !usedThisWeek.has(m.id));
+  let varied = fresh.filter(m => m.src !== excludeSrc);
+  let finalPool = varied.length ? varied : (fresh.length ? fresh : candidates);
+  return finalPool[Math.floor(Math.random()*finalPool.length)];
+}
+function restoOptions(mealSlot){ return RESTAURANTS.filter(r => r.meal.includes(mealSlot)); }
+
+function generateWeek(){
+  const used = new Set();
+  const newPlan = {};
+  const newResto = {};
+  WEEK.forEach(day => {
+    const breakfastPool = day.isSchoolHoliday ? BREAKFASTS.leisurely : BREAKFASTS.quick;
+    const breakfast = breakfastPool[Math.floor(Math.random()*breakfastPool.length)];
+
+    if(day.isPH){
+      const lOpts = restoOptions('lunch'), dOpts = restoOptions('dinner');
+      newResto[day.key] = {
+        lunch: Math.floor(Math.random()*lOpts.length),
+        dinner: Math.floor(Math.random()*dOpts.length)
+      };
+      newPlan[day.key] = { breakfast: breakfast.id, lunch:null, dinner:null };
+    } else {
+      const lunch = pickMeal('lunch', null, null, used);
+      const lunchSrc = lunch ? lunch.src : null;
+      const dinner = pickMeal('dinner', null, lunchSrc, used);
+      if(lunch) used.add(lunch.id);
+      if(dinner) used.add(dinner.id);
+      newPlan[day.key] = { breakfast: breakfast.id, lunch: lunch?lunch.id:null, dinner: dinner?dinner.id:null };
+    }
+  });
+  state.plan = newPlan;
+  state.restoChoice = newResto;
+}
+
+function breakfastById(id){
+  return BREAKFASTS.quick.find(b=>b.id===id) || BREAKFASTS.leisurely.find(b=>b.id===id);
+}
+
+function regenerateMeal(dayKey, slot){
+  const day = WEEK.find(d=>d.key===dayKey);
+  if(slot === 'breakfast'){
+    const p = day.isSchoolHoliday ? BREAKFASTS.leisurely : BREAKFASTS.quick;
+    const current = state.plan[dayKey].breakfast;
+    const opts = p.filter(b=>b.id!==current);
+    const pick = (opts.length?opts:p)[Math.floor(Math.random()*(opts.length?opts.length:p.length))];
+    state.plan[dayKey].breakfast = pick.id;
+  } else if(day.isPH){
+    const opts = restoOptions(slot);
+    const cur = state.restoChoice[dayKey][slot];
+    let next = Math.floor(Math.random()*opts.length);
+    if(opts.length>1){ while(next===cur){ next = Math.floor(Math.random()*opts.length); } }
+    state.restoChoice[dayKey][slot] = next;
+  } else {
+    const other = slot === 'lunch' ? 'dinner' : 'lunch';
+    const otherMeal = mealById(state.plan[dayKey][other]);
+    const currentId = state.plan[dayKey][slot];
+    const usedThisWeek = new Set(Object.values(state.plan).flatMap(d => [d.lunch, d.dinner]).filter(Boolean));
+    const picked = pickMeal(slot, currentId, otherMeal ? otherMeal.src : null, usedThisWeek);
+    if(picked){ state.plan[dayKey][slot] = picked.id; }
+  }
+  render();
+}
+
+/* ---------------- Rendering ---------------- */
+function targetsFor(age){ return AGE_TARGETS[age] || AGE_TARGETS[11]; }
+
+function dayTotals(dayKey){
+  const day = WEEK.find(d=>d.key===dayKey);
+  const p = state.plan[dayKey] || {};
+  const b = breakfastById(p.breakfast);
+  let protein = b ? b.protein : 0, cal = b ? b.cal : 0;
+  if(day.isPH){
+    const lOpts = restoOptions('lunch'), dOpts = restoOptions('dinner');
+    const l = lOpts[state.restoChoice[dayKey]?.lunch] , d = dOpts[state.restoChoice[dayKey]?.dinner];
+    if(l){protein+=l.protein; cal+=l.cal;}
+    if(d){protein+=d.protein; cal+=d.cal;}
+  } else {
+    const l = mealById(p.lunch), d = mealById(p.dinner);
+    if(l){protein+=l.protein; cal+=l.cal;}
+    if(d){protein+=d.protein; cal+=d.cal;}
+  }
+  return {protein, cal};
+}
+
+function renderRoster(){
+  const el = document.getElementById('roster');
+  el.innerHTML = '';
+  boys.forEach(boy => {
+    const t = targetsFor(boy.age);
+    const totals = dayTotals(state.activeDay);
+    const scaledProtein = Math.round(totals.protein * t.factor);
+    const combinedTarget = Math.round(t.proteinHigh * 0.85); // now covers 3 meals
+    const pct = combinedTarget ? Math.round((scaledProtein/combinedTarget)*100) : 0;
+    let color = 'var(--butcher)';
+    if(pct >= 70 && pct < 130) color = 'var(--leaf)';
+    else if(pct >= 130) color = 'var(--gold)';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <input class="boy-name" data-id="${boy.id}" value="${boy.name}" maxlength="24"/>
+      <div class="boy-age">AGE ${boy.age} | TARGET ${t.cal} KCAL/DAY</div>
+      <div class="target-row"><span>Daily protein target</span><span>${t.proteinLow}-${t.proteinHigh}g</span></div>
+      <div class="gauge-label"><span>${state.activeDay} 3-meal protein</span><span class="gauge-pct" style="color:${color}">${scaledProtein}g | ${pct}%</span></div>
+      <div class="gauge-track"><div class="gauge-fill" style="width:${Math.min(pct,140)/1.4}%;background:${color}"></div></div>
+      <div class="gauge-note">of ~${combinedTarget}g expected across breakfast + lunch + dinner</div>
+    `;
+    el.appendChild(card);
+  });
+  el.querySelectorAll('.boy-name').forEach(inp => {
+    inp.addEventListener('change', e => {
+      const id = parseInt(e.target.dataset.id);
+      boys.find(b => b.id === id).name = e.target.value || 'Boy';
+    });
+  });
+}
+
+function renderFilters(){
+  const pEl = document.getElementById('proteinChips');
+  pEl.innerHTML = '';
+  PROTEIN_SOURCES.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (state.allowedSources.has(p.key) ? ' active' : '');
+    chip.textContent = p.label;
+    chip.onclick = () => {
+      if(state.allowedSources.has(p.key)){ if(state.allowedSources.size > 1) state.allowedSources.delete(p.key); }
+      else { state.allowedSources.add(p.key); }
+      renderFilters();
+    };
+    pEl.appendChild(chip);
+  });
+  const cEl = document.getElementById('cuisineChips');
+  cEl.innerHTML = '';
+  ['Asian','Western'].forEach(c => {
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (state.allowedCuisines.has(c) ? ' active' : '');
+    chip.textContent = c;
+    chip.onclick = () => {
+      if(state.allowedCuisines.has(c)){ if(state.allowedCuisines.size > 1) state.allowedCuisines.delete(c); }
+      else { state.allowedCuisines.add(c); }
+      renderFilters();
+    };
+    cEl.appendChild(chip);
+  });
+}
+
+function renderDayTabs(){
+  const el = document.getElementById('dayTabs');
+  el.innerHTML = '';
+  WEEK.forEach(day => {
+    const tab = document.createElement('div');
+    tab.className = 'day-tab' + (day.key === state.activeDay ? ' active' : '');
+    let badge = '';
+    if(day.isPH) badge = `<span class="badge">PH</span>`;
+    else if(day.schoolLabel) badge = `<span class="badge sch">HOL</span>`;
+    tab.innerHTML = `${day.key}${badge}<span class="dtdate">${day.dateLabel}</span>`;
+    tab.onclick = () => { state.activeDay = day.key; render(); };
+    el.appendChild(tab);
+  });
+}
+
+function breakfastCardHTML(dayKey){
+  const p = state.plan[dayKey];
+  const b = breakfastById(p.breakfast);
+  if(!b) return '';
+  return `
+    <div class="meal-card">
+      <div class="meal-slot">breakfast</div>
+      <div class="meal-name">${b.name}</div>
+      <div class="macro-row"><span><b>${b.cal}</b> kcal</span><span><b>${b.protein}</b> g protein</span></div>
+      <div class="ingredients">${b.ing.join(' | ')}</div>
+      <div class="meal-actions"><button class="icon-btn" data-day="${dayKey}" data-slot="breakfast" title="Swap">${ICONS.refresh}</button></div>
+    </div>`;
+}
+
+function mealCardHTML(dayKey, slot){
+  const day = WEEK.find(d=>d.key===dayKey);
+  if(day.isPH){
+    const opts = restoOptions(slot);
+    const idx = state.restoChoice[dayKey]?.[slot] ?? 0;
+    const chosen = opts[idx];
+    if(!chosen) return `<div class="meal-card"><div class="meal-slot">${slot}</div><div class="meal-name">No dining suggestion available</div></div>`;
+    return `
+      <div class="meal-card">
+        <div class="meal-slot">${slot} | dining out</div>
+        <div class="resto-name">${chosen.name}</div>
+        <div class="resto-meta">${chosen.note}</div>
+        <div class="macro-row" style="margin-top:8px;"><span>~<b>${chosen.cal}</b> kcal</span><span>~<b>${chosen.protein}</b> g protein</span></div>
+        <div class="meal-actions"><button class="icon-btn" data-day="${dayKey}" data-slot="${slot}" title="Another suggestion">${ICONS.refresh}</button></div>
+      </div>`;
+  }
+  const meal = mealById(state.plan[dayKey] ? state.plan[dayKey][slot] : null);
+  if(!meal){
+    return `<div class="meal-card"><div class="meal-slot">${slot}</div><div class="meal-name">No meal matches current filters</div></div>`;
+  }
+  return `
+    <div class="meal-card">
+      <div class="meal-slot">${slot}</div>
+      <div class="meal-name">${meal.name}</div>
+      <div class="meal-tags"><span class="tag">${meal.cuisine}</span><span class="tag">${meal.src}</span></div>
+      <div class="macro-row"><span><b>${meal.cal}</b> kcal</span><span><b>${meal.protein}</b> g protein</span></div>
+      <div class="ingredients">${meal.ing.join(' | ')}</div>
+      <div class="meal-actions"><button class="icon-btn" data-day="${dayKey}" data-slot="${slot}" title="Swap this meal">${ICONS.refresh}</button></div>
+    </div>`;
+}
+
+function renderDayPanel(){
+  const el = document.getElementById('dayPanel');
+  const day = WEEK.find(d=>d.key===state.activeDay);
+  const totals = dayTotals(state.activeDay);
+
+  let banner = '';
+  if(day.isPH) banner = `<div class="holiday-banner">${day.phName} - public holiday. Lunch &amp; dinner swapped for family-friendly dining out.</div>`;
+  else if(day.schoolLabel) banner = `<div class="holiday-banner sch">${day.schoolLabel} - breakfast relaxed to a leisurely option.</div>`;
+  else if(day.isWeekend) banner = `<div class="holiday-banner sch">Weekend - breakfast relaxed to a leisurely option.</div>`;
+
+  el.innerHTML = `
+    ${banner}
+    <div class="meal-grid">
+      ${breakfastCardHTML(day.key)}
+      ${mealCardHTML(day.key,'lunch')}
+      ${mealCardHTML(day.key,'dinner')}
+    </div>
+    <div class="day-summary">Reference totals (per person, before per-boy scaling): ${totals.cal} kcal | ${totals.protein}g protein across breakfast + lunch + dinner.</div>
+  `;
+  el.querySelectorAll('.icon-btn').forEach(btn => {
+    btn.addEventListener('click', () => regenerateMeal(btn.dataset.day, btn.dataset.slot));
+  });
+}
+
+function buildShoppingList(){
+  const tally = {};
+  WEEK.forEach(day => {
+    const p = state.plan[day.key];
+    const b = breakfastById(p.breakfast);
+    if(b) b.ing.forEach(i => tally[i]=(tally[i]||0)+1);
+    if(!day.isPH){
+      const l = mealById(p.lunch), d = mealById(p.dinner);
+      if(l) l.ing.forEach(i => tally[i]=(tally[i]||0)+1);
+      if(d) d.ing.forEach(i => tally[i]=(tally[i]||0)+1);
+    }
+  });
+  const entries = Object.entries(tally).sort((a,b) => b[1]-a[1]);
+  const el = document.getElementById('receipt');
+  const rows = entries.map(([item,count]) => `<div class="receipt-row"><span>${item}</span><span>x${count}</span></div>`).join('');
+  el.innerHTML = `
+    <h3>Grocery Run</h3>
+    <div class="sub">Week of ${WEEK[0].dateLabel}-${WEEK[6].dateLabel} | home-cooked days only, scale for 4 boys</div>
+    <hr/>
+    <div class="receipt-cat">Ingredients (by meals used)</div>
+    ${rows}
+    <hr/>
+    <div class="receipt-row"><span>TOTAL LINE ITEMS</span><span>${entries.length}</span></div>
+    <div class="snip">- - - - - - - - - - - - - - - - - - -</div>
+  `;
+  document.getElementById('shoppingWrap').classList.remove('hidden');
+  document.getElementById('shoppingWrap').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function buildEmailBody(){
+  let lines = [];
+  lines.push(`FAMILY MENU - WEEK OF ${WEEK[0].dateLabel} to ${WEEK[6].dateLabel}`);
+  lines.push('');
+  WEEK.forEach(day => {
+    let header = `${day.key} ${day.dateLabel}`;
+    if(day.isPH) header += `  [PUBLIC HOLIDAY - ${day.phName}]`;
+    else if(day.schoolLabel) header += `  [${day.schoolLabel}]`;
+    lines.push(header);
+    const p = state.plan[day.key];
+    const b = breakfastById(p.breakfast);
+    lines.push(`  Breakfast: ${b ? b.name : '-'}`);
+    if(day.isPH){
+      const lOpts = restoOptions('lunch'), dOpts = restoOptions('dinner');
+      const l = lOpts[state.restoChoice[day.key]?.lunch], d = dOpts[state.restoChoice[day.key]?.dinner];
+      lines.push(`  Lunch (dining out): ${l ? l.name+' - '+l.note : '-'}`);
+      lines.push(`  Dinner (dining out): ${d ? d.name+' - '+d.note : '-'}`);
+    } else {
+      const l = mealById(p.lunch), d = mealById(p.dinner);
+      lines.push(`  Lunch: ${l ? l.name : '-'}`);
+      lines.push(`  Dinner: ${d ? d.name : '-'}`);
+    }
+    lines.push('');
+  });
+  lines.push('- Sent from The Training Table meal planner');
+  return lines.join(String.fromCharCode(10));
+}
+
+function sendEmail(){
+  const to = 'li.hui.tan@hotmail.com,youdateh@gmail.com';
+  const subject = encodeURIComponent(`Family Menu - Week of ${WEEK[0].dateLabel}`);
+  const body = encodeURIComponent(buildEmailBody());
+  window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+}
+
+function renderFootnote(){
+  document.getElementById('footnote').textContent =
+    "Targets are general planning guides for moderately active boys, not individual medical advice - check with a paediatrician or dietitian for specific needs. Public holiday and MOE school holiday dates are loaded for 2026 and 2027 from MOM/MOE published calendars (Hari Raya dates for 2027 are provisional pending moon-sighting confirmation); extend the two lists near the top of this file once 2028 dates are released. Restaurant suggestions are general, protein-leaning picks for family dining - check current outlets, hours and menus before heading out.";
+}
+
+function renderAutopilotPrompt(){
+  document.getElementById('autopilotPrompt').textContent =
+`Every Sunday at 6pm, generate this week's family menu (Mon-Sun, breakfast/lunch/dinner,
+protein-forward for boys aged 14/11/11/10) using the same logic as "The Training Table"
+planner artifact: home-cooked meals on normal days, a relaxed breakfast on weekends and
+MOE school holidays, and family-friendly restaurant suggestions instead of home-cooked
+lunch/dinner on Singapore public holidays. Then send the plan by email via Gmail to
+li.hui.tan@hotmail.com and youdateh@gmail.com with subject "Family Menu - Week of [date]".`;
+}
+
+function render(){
+  document.getElementById('weekOf').textContent = `${WEEK[0].dateLabel} - ${WEEK[6].dateLabel}`;
+  renderRoster();
+  renderFilters();
+  renderDayTabs();
+  renderDayPanel();
+  renderFootnote();
+  renderAutopilotPrompt();
+}
+
+function sendViaGmailLive(){
+  const statusEl = document.getElementById('sendStatus');
+  const to = 'li.hui.tan@hotmail.com,youdateh@gmail.com';
+  const subject = `Family Menu - Week of ${WEEK[0].dateLabel}`;
+  const body = buildEmailBody();
+  const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const gmailWindow = window.open(url, '_blank', 'noopener');
+  if(gmailWindow){
+    statusEl.textContent = 'Opened a pre-filled Gmail compose window - review it and hit Send.';
+    statusEl.style.color = 'var(--leaf-dark)';
+  } else {
+    statusEl.textContent = 'Pop-up blocked. Allow pop-ups for this page, or use "Open in mail app" instead.';
+    statusEl.style.color = 'var(--butcher)';
+  }
+}
+
+document.getElementById('shuffleWeekBtn').addEventListener('click', () => { generateWeek(); render(); });
+document.getElementById('shoppingBtn').addEventListener('click', buildShoppingList);
+document.getElementById('emailBtn').addEventListener('click', sendEmail);
+document.getElementById('gmailSendBtn').addEventListener('click', sendViaGmailLive);
+
+generateWeek();
+render();
+
+})();
+</script>
