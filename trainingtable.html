@@ -292,10 +292,10 @@ body{margin:0;}
 
     <div class="section-label">Running this every Sunday, automatically</div>
     <div class="autopilot">
-      <h4>Set up the weekly auto-send</h4>
-      <p style="font-size:13px;line-height:1.6;margin:0;">This artifact can build the menu and even open a pre-filled email for you on demand - but a browser tool can't wake itself up every Sunday. To get a fully automatic weekly email to <b>li.hui.tan@hotmail.com</b> and <b>youdateh@gmail.com</b>, use <b>Claude Cowork's Scheduled Tasks</b> (Schedule tab, weekly, Sunday evening) with your connected Gmail. Paste this as the task:</p>
+      <h4>Set up the weekly auto-draft</h4>
+      <p style="font-size:13px;line-height:1.6;margin:0;">This artifact can build the menu and even open a pre-filled email for you on demand - but a browser tool can't wake itself up every Sunday. To get a weekly Gmail draft ready and waiting for <b>li.hui.tan@hotmail.com</b> and <b>youdateh@gmail.com</b>, use <b>Claude Cowork's Scheduled Tasks</b> (Schedule tab, weekly, Sunday evening) with your connected Gmail. Paste this as the task:</p>
       <code id="autopilotPrompt"></code>
-      <p style="font-size:11.5px;opacity:0.65;margin-top:10px;">Until that's set up, the "Email this week's menu" button above gives you the same output on demand, one click at a time.</p>
+      <p style="font-size:11.5px;opacity:0.65;margin-top:10px;">Note: the connected Gmail integration can create drafts but cannot send on its own, so this creates a ready-to-send draft each week - you still tap Send yourself. Until that's set up, the "Compose in Gmail" and "Open in mail app" buttons above give you the same output on demand, one click at a time.</p>
     </div>
 
     <div class="footnote" id="footnote"></div>
@@ -790,10 +790,12 @@ function renderAutopilotPrompt(){
 `Every Sunday at 6pm (Singapore time), in the youdateh-maker/EH-ENV-Test repository,
 run "node scripts/generate-weekly-menu.js" from the repo root to get this week's menu
 as JSON (subject, body, to). Follow the full steps in
-.claude/agents/training-table-mailer.md in that repo, including finding a Gmail send
-tool via ToolSearch. Then send an email via Gmail using that exact subject and body to
-li.hui.tan@hotmail.com and youdateh@gmail.com. This is an unattended scheduled run -
-act immediately, no confirmation needed.`;
+.claude/agents/training-table-mailer.md in that repo: look for a Gmail send tool via
+ToolSearch, and if none exists, create a Gmail draft instead (mcp__Gmail__create_draft)
+with that exact subject and body, addressed to li.hui.tan@hotmail.com and
+youdateh@gmail.com. Report whether it was actually sent or only drafted - never say
+"sent" unless a send call succeeded. This is an unattended scheduled run - act
+immediately, no confirmation needed.`;
 }
 
 function render(){
