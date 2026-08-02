@@ -787,12 +787,13 @@ function renderFootnote(){
 
 function renderAutopilotPrompt(){
   document.getElementById('autopilotPrompt').textContent =
-`Every Sunday at 6pm, generate this week's family menu (Mon-Sun, breakfast/lunch/dinner,
-protein-forward for boys aged 14/11/11/10) using the same logic as "The Training Table"
-planner artifact: home-cooked meals on normal days, a relaxed breakfast on weekends and
-MOE school holidays, and family-friendly restaurant suggestions instead of home-cooked
-lunch/dinner on Singapore public holidays. Then send the plan by email via Gmail to
-li.hui.tan@hotmail.com and youdateh@gmail.com with subject "Family Menu - Week of [date]".`;
+`Every Sunday at 6pm (Singapore time), in the youdateh-maker/EH-ENV-Test repository,
+run "node scripts/generate-weekly-menu.js" from the repo root to get this week's menu
+as JSON (subject, body, to). Follow the full steps in
+.claude/agents/training-table-mailer.md in that repo, including finding a Gmail send
+tool via ToolSearch. Then send an email via Gmail using that exact subject and body to
+li.hui.tan@hotmail.com and youdateh@gmail.com. This is an unattended scheduled run -
+act immediately, no confirmation needed.`;
 }
 
 function render(){
